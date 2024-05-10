@@ -4,3 +4,4 @@ This addon is the original work of atom0s and Tornac with only slight modificati
 Here is a link to the original petinfo repo:
 https://github.com/AshitaXI/Ashita-v4beta/blob/main/addons/petinfo/petinfo.lua
 
+![PetinfoDisplay](https://github.com/GetAwayCoxn/HorizonXI-Addons/assets/66495755/9353292b-19bd-4c4b-821a-c411e4df5c58)

@@ -1,6 +1,6 @@
 addon.name      = "Exp"
 addon.author    = "GetAwayCoxn"
-addon.version   = "1.0"
+addon.version   = "1.1"
 addon.desc      = "Shows exp and tnl's for all jobs"
 addon.link      = "https://github.com/GetAwayCoxn/Ashita-v4-Addons"
 
@@ -36,6 +36,7 @@ local defaults = T{
     meritPoints = 0,
     meritPointsMax = 0,
     delay = 10,
+    tnlToggle = true,
 }
 local windowSize = { 495, 270 }
 local header = { 1.0, 0.75, 0.25, 1.0 }
@@ -152,9 +153,15 @@ ashita.events.register("d3d_present", "present_cb", function()
             else
                 imgui.Text(string.format("%02d", settings.data[j]["level"]))
                 imgui.SameLine()
-                imgui.TextColored(header, "Tnl:")
-                imgui.SameLine()
-                imgui.Text(comma_value(settings.data[j]["expNeeded"] - settings.data[j]["expCurrent"]))
+                if settings.tnlToggle then
+                    imgui.TextColored(header, "Tnl:")
+                    imgui.SameLine()
+                    imgui.Text(comma_value(settings.data[j]["expNeeded"] - settings.data[j]["expCurrent"]))
+                else
+                    imgui.TextColored(header, "Curr:")
+                    imgui.SameLine()
+                    imgui.Text(comma_value(settings.data[j]["expCurrent"]))
+                end
             end
             if settings.data[j]["level"] > 0 then
                 local totalPercentage = (expSpentMap[settings.data[j]["level"]] + settings.data[j]["expCurrent"]) /
@@ -187,6 +194,8 @@ ashita.events.register("command", "command_cb", function (e)
         settings.visible[1] = not settings.visible[1]
     elseif #args == 2 and args[2]:any("debug") then
         DEBUG = not DEBUG
+    elseif #args == 2 and args[2]:any("tnl") then
+        settings.tnlToggle = not settings.tnlToggle
     end
 end)
 

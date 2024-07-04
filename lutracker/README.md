@@ -1,6 +1,9 @@
 # LuTracker
 This is a small basic addon to help track your progress on trading in moat carps for the Lu Shang's Fishing Rod.
 
+### Version 1.1
+- Added delay to settings.save() function to not overload the lib if someone holds down the + or - buttons
+
 ### Version 1.0
 - Has commands '/lut' or '/lutracker' to hide/show the GUI
 - Includes adjustable price (per stack) input to give estimated cost remaining

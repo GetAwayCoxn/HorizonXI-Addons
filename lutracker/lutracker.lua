@@ -1,6 +1,6 @@
 addon.name      = "lutracker"
 addon.author    = "GetAwayCoxn"
-addon.version   = "1.0"
+addon.version   = "1.1"
 addon.desc      = "Tracks moat info for lu shang's rod"
 addon.link      = "https://github.com/GetAwayCoxn/HorizonXI-Addons"
 
@@ -17,6 +17,8 @@ local DEFAULT_SETTINGS = T{
 local header = { 1.0, 0.75, 0.25, 1.0 }
 local window_size = { 310, 125 }
 local lastKnownGil = nil
+local saveCheck = false
+local lastSaveCall = os.time()
 
 ashita.events.register("load", "load_cb", function()
     settings = SETTINGS.load(DEFAULT_SETTINGS)
@@ -32,6 +34,12 @@ ashita.events.register("unload", "unload_cb", function()
 end)
 
 ashita.events.register("d3d_present", "present_cb", function ()
+    if saveCheck then
+        if os.time() - lastSaveCall > 5 then
+            SETTINGS.save()
+            saveCheck = false
+        end
+    end
     if not settings.visible[1] then return end
     imgui.SetNextWindowSize(window_size)
     if imgui.Begin("Lu Tracker", settings.visible, ImGuiWindowFlags_NoDecoration) then
@@ -45,10 +53,10 @@ ashita.events.register("d3d_present", "present_cb", function ()
         imgui.Separator()
         imgui.Indent(-280)
         if imgui.InputInt("Price (stack)",settings.price,100,1000) then
-            SETTINGS.save()
+            saveCheck = true
         end
         if imgui.InputInt("Total Traded",settings.total,1,100) then
-            SETTINGS.save()
+            saveCheck = true
         end
         imgui.TextColored(header,"Fishies Left:")
         imgui.SameLine()
